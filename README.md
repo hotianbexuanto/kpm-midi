@@ -66,3 +66,20 @@ kptools --load midi.kpm
 ## License
 
 GPL v2
+
+## Troubleshooting
+
+If you encounter loading errors with the module, try the following:
+
+1. Check kernel logs for detailed error messages:
+   ```bash
+   dmesg | grep kpm-midi
+   ```
+
+2. Ensure KernelPatch is properly installed and compatible with your kernel version.
+
+3. Verify that all required KernelPatch headers and libraries are available during compilation.
+
+4. Check that the module is compiled for the correct target platform and kernel version.
+
+5. If using the GitHub Actions workflow, ensure that the KernelPatch repository is properly cloned and accessible.

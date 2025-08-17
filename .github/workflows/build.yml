@@ -12,10 +12,6 @@ on:
         - 'aarch64'
         - 'armv7a'
         - 'x86_64'
-      kernel_version:
-        description: 'Kernel version to compile against'
-        required: false
-        default: 'latest'
 
 jobs:
   build:
@@ -49,15 +45,16 @@ jobs:
     - name: Clone KernelPatch
       run: |
         git clone https://github.com/bmax121/KernelPatch.git
-        echo "KP_DIR=${{ github.workspace }}/KernelPatch" >> $GITHUB_ENV
 
     - name: Build kpm-midi module
       run: |
+        export KP_DIR=${{ github.workspace }}/KernelPatch
         make
+        mv midi.kpm kpm-midi.kpm
 
     - name: Check build result
       run: |
-        if [ -f "midi.kpm" ]; then
+        if [ -f "kpm-midi.kpm" ]; then
           echo "Build successful"
           ls -la *.kpm
         else

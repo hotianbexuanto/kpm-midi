@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
- * Copyright (C) 2025 Your Name. All Rights Reserved.
+ * Copyright (C) 2023 Your Name. All Rights Reserved.
  */
 
 #include <compiler.h>
 #include <kpmodule.h>
 #include <linux/printk.h>
+#include <common.h>
+#include <kputils.h>
 
 KPM_NAME("kpm-midi");
 KPM_VERSION("1.0.0");
