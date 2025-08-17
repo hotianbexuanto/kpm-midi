@@ -16,20 +16,11 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       
-      - name: Debug - List root directory
+      - name: Debug - Show current directory
         run: |
           echo "Current directory: $(pwd)"
-          echo "Listing root directory:"
+          echo "Directory listing:"
           ls -la
-          echo "Listing all directories recursively:"
-          find . -type d -not -path "./.git/*" | sort
-      
-      - name: Debug - Check Git status
-        run: |
-          echo "Git status:"
-          git status
-          echo "Git branch:"
-          git branch -a
       
       - name: Install Compiler
         run: |
@@ -39,32 +30,15 @@ jobs:
       - name: Build kpm-midi
         run: |
           export TARGET_COMPILE=`pwd`/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
-          # Try to find and enter kpm-midi directory
-          if [ -d "kpm-midi" ]; then
-            echo "Found kpm-midi in current directory"
-            cd kpm-midi
-          else
-            echo "kpm-midi not in current directory, searching..."
-            KPM_MIDI_DIR=$(find . -type d -name "kpm-midi" -not -path "./.git/*" | head -n 1)
-            if [ -n "$KPM_MIDI_DIR" ] && [ -d "$KPM_MIDI_DIR" ]; then
-              echo "Found kpm-midi directory at: $KPM_MIDI_DIR"
-              cd "$KPM_MIDI_DIR"
-            else
-              echo "Error: kpm-midi directory not found"
-              echo "Current directory: $(pwd)"
-              echo "Directory listing:"
-              ls -la
-              exit 1
-            fi
-          fi
           
+          # We are already in the kpm-midi directory
           echo "Current directory: $(pwd)"
           echo "Directory listing:"
           ls -la
           
           # Check if Makefile exists
           if [ ! -f "Makefile" ]; then
-            echo "Error: Makefile not found in kpm-midi directory"
+            echo "Error: Makefile not found"
             exit 1
           fi
           
@@ -74,5 +48,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            */midi.kpm
+            midi.kpm
           name: kpm-midi-artifact
