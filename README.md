@@ -1,11 +1,10 @@
 # kpm-midi
 
-A KernelPatch module that plays MIDI sounds on load.
+A KernelPatch module that would play MIDI sounds on load (simplified version).
 
 ## Features
 
-- Plays a C major scale when the module is loaded
-- Uses Linux kernel timers for sequential note playback
+- Logs a message when the module is loaded
 - Compatible with KernelPatch framework
 
 ## Building
@@ -43,6 +42,10 @@ This repository includes a GitHub Actions workflow for cloud building:
 The built module will be available as an artifact after the workflow completes.
 
 ## Changelog
+
+### v1.0.3
+- Simplified module implementation to remove Linux kernel timer dependencies
+- Removed MIDI playback functionality due to compatibility issues with KernelPatch
 
 ### v1.0.2
 - Fixed GitHub Actions workflow directory structure issue
