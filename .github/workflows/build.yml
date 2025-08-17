@@ -53,12 +53,10 @@ jobs:
 
     - name: Build kpm-midi module
       run: |
-        cd kpm-midi
         make
 
     - name: Check build result
       run: |
-        cd kpm-midi
         if [ -f "midi.kpm" ]; then
           echo "Build successful"
           ls -la *.kpm
@@ -71,4 +69,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: kpm-midi-${{ github.event.inputs.target_platform }}
-        path: kpm-midi/*.kpm
+        path: ./*.kpm

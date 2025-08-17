@@ -25,7 +25,6 @@ A KernelPatch module that plays MIDI sounds on load.
 
 2. Compile the module:
    ```bash
-   cd kpm-midi
    make
    ```
 
@@ -44,6 +43,9 @@ This repository includes a GitHub Actions workflow for cloud building:
 The built module will be available as an artifact after the workflow completes.
 
 ## Changelog
+
+### v1.0.2
+- Fixed GitHub Actions workflow directory structure issue
 
 ### v1.0.1
 - Fixed GitHub Actions workflow to use `actions/upload-artifact@v4` instead of deprecated `v3`
