@@ -1,43 +1,71 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
- * Copyright (C) 2023 Your Name. All Rights Reserved.
+ * Copyright (C) 2025 Your Name. All Rights Reserved.
  */
 
 #include <compiler.h>
 #include <kpmodule.h>
 #include <linux/printk.h>
-#include <common.h>
-#include <kputils.h>
 
+///< The name of the module, each KPM must has a unique name.
 KPM_NAME("kpm-midi");
-KPM_VERSION("1.0.0");
-KPM_LICENSE("GPL v2");
-KPM_AUTHOR("Your Name");
-KPM_DESCRIPTION("KernelPatch Module for MIDI sound on load");
 
-// 模块初始化函数
+///< The version of the module.
+KPM_VERSION("1.0.0");
+
+///< The license type.
+KPM_LICENSE("GPL v2");
+
+///< The author.
+KPM_AUTHOR("Your Name");
+
+///< The description.
+KPM_DESCRIPTION("KernelPatch MIDI Module");
+
+/**
+ * @brief midi module initialization
+ * @details This function is called when the module is loaded
+ * 
+ * @param args arguments passed to the module
+ * @param event event that triggered the module loading
+ * @param reserved reserved parameter
+ * @return long 0 on success, non-zero on failure
+ */
 static long midi_init(const char *args, const char *event, void *__user reserved)
 {
-    pr_info("kpm-midi init, event: %s, args: %s\n", event, args);
-    pr_info("MIDI module loaded - would play sounds here if implemented\n");
+    pr_info("kpm midi init, event: %s, args: %s\n", event, args);
+    pr_info("此模块kpm-midi加载成功\n");
     return 0;
 }
 
-// 模块控制函数
-static long midi_control(const char *args, char *__user out_msg, int outlen)
+/**
+ * @brief midi module control function 0
+ * @details This function handles control requests from user space
+ * 
+ * @param args arguments passed from user space
+ * @param out_msg output message to user space
+ * @param outlen length of output message buffer
+ * @return long 0 on success, non-zero on failure
+ */
+static long midi_control0(const char *args, char *__user out_msg, int outlen)
 {
-    pr_info("kpm-midi control, args: %s\n", args);
+    pr_info("kpm midi control0, args: %s\n", args);
     return 0;
 }
 
-// 模块退出函数
+/**
+ * @brief midi module exit function
+ * @details This function is called when the module is unloaded
+ * 
+ * @param reserved reserved parameter
+ * @return long 0 on success, non-zero on failure
+ */
 static long midi_exit(void *__user reserved)
 {
-    pr_info("kpm-midi exit\n");
+    pr_info("kpm midi exit\n");
     return 0;
 }
 
-// 模块入口点定义
 KPM_INIT(midi_init);
-KPM_CTL0(midi_control);
+KPM_CTL0(midi_control0);
 KPM_EXIT(midi_exit);

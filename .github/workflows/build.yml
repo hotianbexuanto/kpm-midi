@@ -1,69 +1,35 @@
-name: Build kpm-midi
+name: Build CI
 
 on:
+  workflow_call:
   workflow_dispatch:
-    inputs:
-      target_platform:
-        description: 'Target platform for compilation'
-        required: true
-        default: 'aarch64'
-        type: choice
-        options:
-        - 'aarch64'
-        - 'armv7a'
-        - 'x86_64'
 
 jobs:
-  build:
+  Build-kpm-midi:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up build environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi gcc-x86-64-linux-gnu
-
-    - name: Set compiler based on target platform
-      run: |
-        case ${{ github.event.inputs.target_platform }} in
-          aarch64)
-            echo "TARGET_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
-            ;;
-          armv7a)
-            echo "TARGET_COMPILE=arm-linux-gnueabi-" >> $GITHUB_ENV
-            ;;
-          x86_64)
-            echo "TARGET_COMPILE=x86_64-linux-gnu-" >> $GITHUB_ENV
-            ;;
-          *)
-            echo "TARGET_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
-            ;;
-        esac
-
-    - name: Clone KernelPatch
-      run: |
-        git clone https://github.com/bmax121/KernelPatch.git
-
-    - name: Build kpm-midi module
-      run: |
-        export KP_DIR=${{ github.workspace }}/KernelPatch
-        make
-        mv midi.kpm kpm-midi.kpm
-
-    - name: Check build result
-      run: |
-        if [ -f "kpm-midi.kpm" ]; then
-          echo "Build successful"
-          ls -la *.kpm
-        else
-          echo "Build failed"
-          exit 1
-        fi
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: kpm-midi-${{ github.event.inputs.target_platform }}
-        path: ./*.kpm
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
+      
+      - name: Install Compiler
+        run: |
+          curl -o arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
+          tar -Jxf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
+      
+      - name: Build kpm-midi
+        run: |
+          export TARGET_COMPILE=`pwd`/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+          cd kpm-midi
+          make
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            kpm-midi/midi.kpm
+          name: kpm-midi-artifact

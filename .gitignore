@@ -1,2 +1,8 @@
-*.kpm
+# Object files
 *.o
+
+# Kernel Patch Modules
+*.kpm
+
+# Backup files
+*~
