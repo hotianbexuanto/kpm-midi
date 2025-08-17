@@ -1,0 +1,74 @@
+name: Build kpm-midi
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_platform:
+        description: 'Target platform for compilation'
+        required: true
+        default: 'aarch64'
+        type: choice
+        options:
+        - 'aarch64'
+        - 'armv7a'
+        - 'x86_64'
+      kernel_version:
+        description: 'Kernel version to compile against'
+        required: false
+        default: 'latest'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi gcc-x86-64-linux-gnu
+
+    - name: Set compiler based on target platform
+      run: |
+        case ${{ github.event.inputs.target_platform }} in
+          aarch64)
+            echo "TARGET_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
+            ;;
+          armv7a)
+            echo "TARGET_COMPILE=arm-linux-gnueabi-" >> $GITHUB_ENV
+            ;;
+          x86_64)
+            echo "TARGET_COMPILE=x86_64-linux-gnu-" >> $GITHUB_ENV
+            ;;
+          *)
+            echo "TARGET_COMPILE=aarch64-linux-gnu-" >> $GITHUB_ENV
+            ;;
+        esac
+
+    - name: Clone KernelPatch
+      run: |
+        git clone https://github.com/bmax121/KernelPatch.git
+        echo "KP_DIR=${{ github.workspace }}/KernelPatch" >> $GITHUB_ENV
+
+    - name: Build kpm-midi module
+      run: |
+        cd kpm-midi
+        make
+
+    - name: Check build result
+      run: |
+        cd kpm-midi
+        if [ -f "midi.kpm" ]; then
+          echo "Build successful"
+          ls -la *.kpm
+        else
+          echo "Build failed"
+          exit 1
+        fi
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: kpm-midi-${{ github.event.inputs.target_platform }}
+        path: kpm-midi/*.kpm
