@@ -5,17 +5,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build-kpm-midi:
+  Build-kpm-phone-monitor:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Check out kpm-midi
+      - name: Check out kpm-phone-monitor
         uses: actions/checkout@v4
         with:
           submodules: "recursive"
           fetch-depth: 0
-          path: kpm-midi
+          path: kpm-phone-monitor
       
       - name: Clone SukiSU_KernelPatch_patch
         run: |
@@ -35,12 +35,12 @@ jobs:
           curl -o arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
           tar -Jxf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
       
-      - name: Build kpm-midi
+      - name: Build kpm-phone-monitor
         run: |
           export TARGET_COMPILE=`pwd`/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
           export KP_DIR=`pwd`/../SukiSU_KernelPatch_patch
           
-          cd kpm-midi
+          cd kpm-phone-monitor
           echo "Current directory: $(pwd)"
           echo "Directory listing:"
           ls -la
@@ -57,5 +57,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            kpm-midi/midi.kpm
-          name: kpm-midi-artifact
+            kpm-phone-monitor/phone-monitor.kpm
+          name: kpm-phone-monitor-artifact

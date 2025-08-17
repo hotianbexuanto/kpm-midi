@@ -28,11 +28,11 @@ INCLUDE_FLAGS := $(foreach dir,$(INCLUDE_DIRS),-I$(KP_DIR)/$(dir))
 # Add local directory to include path as fallback
 INCLUDE_FLAGS += -I.
 
-objs := midi.o
+objs := phone-monitor.o
 
-all: midi.kpm
+all: phone-monitor.kpm
 
-midi.kpm: ${objs}
+phone-monitor.kpm: ${objs}
 	${CC} -r -o $@ $^
 
 %.o: %.c

@@ -6,3 +6,11 @@
 
 # Backup files
 *~
+
+# Build artifacts
+*.so
+*.ko
+*.mod
+*.mod.c
+modules.order
+Module.symvers
