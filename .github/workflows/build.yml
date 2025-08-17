@@ -20,7 +20,7 @@ jobs:
       - name: Clone SukiSU_KernelPatch_patch
         run: |
           cd ..
-          git clone https://github.com/Sukikebi/SukiSU_KernelPatch_patch.git
+          git clone https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch.git
       
       - name: Debug - Show directory structure
         run: |
