@@ -6,6 +6,7 @@
 #include <compiler.h>
 #include <kpmodule.h>
 #include <linux/printk.h>
+#include <log.h>
 
 ///< The name of the module, each KPM must has a unique name.
 KPM_NAME("kpm-midi");
@@ -34,7 +35,7 @@ KPM_DESCRIPTION("KernelPatch MIDI Module");
 static long midi_init(const char *args, const char *event, void *__user reserved)
 {
     pr_info("kpm midi init, event: %s, args: %s\n", event, args);
-    pr_info("此模块kpm-midi加载成功\n");
+    logkd("此模块kpm-midi加载成功\n");
     return 0;
 }
 
@@ -50,6 +51,7 @@ static long midi_init(const char *args, const char *event, void *__user reserved
 static long midi_control0(const char *args, char *__user out_msg, int outlen)
 {
     pr_info("kpm midi control0, args: %s\n", args);
+    logkd("kpm midi control0 called\n");
     return 0;
 }
 
@@ -63,6 +65,7 @@ static long midi_control0(const char *args, char *__user out_msg, int outlen)
 static long midi_exit(void *__user reserved)
 {
     pr_info("kpm midi exit\n");
+    logkd("kpm midi module unloaded\n");
     return 0;
 }
 

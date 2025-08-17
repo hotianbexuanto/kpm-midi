@@ -17,10 +17,10 @@ jobs:
           fetch-depth: 0
           path: kpm-midi
       
-      - name: Clone KernelPatch
+      - name: Clone SukiSU_KernelPatch_patch
         run: |
           cd ..
-          git clone https://github.com/SukiSU-Ultra/SukiSU_KernelPatch_patch.git KernelPatch
+          git clone https://github.com/Sukikebi/SukiSU_KernelPatch_patch.git
       
       - name: Debug - Show directory structure
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Build kpm-midi
         run: |
           export TARGET_COMPILE=`pwd`/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
-          export KP_DIR=`pwd`/../KernelPatch
+          export KP_DIR=`pwd`/../SukiSU_KernelPatch_patch
           
           cd kpm-midi
           echo "Current directory: $(pwd)"
