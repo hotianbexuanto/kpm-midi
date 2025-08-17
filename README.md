@@ -43,6 +43,14 @@ This repository includes a GitHub Actions workflow for cloud building:
 
 The built module will be available as an artifact after the workflow completes.
 
+## Changelog
+
+### v1.0.1
+- Fixed GitHub Actions workflow to use `actions/upload-artifact@v4` instead of deprecated `v3`
+
+### v1.0.0
+- Initial release
+
 ## Usage
 
 Load the module using KernelPatch tools:
